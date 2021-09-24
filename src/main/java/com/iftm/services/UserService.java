@@ -38,6 +38,21 @@ public class UserService {
 		entity = repository.insert(entity);
 		return new UserDTO(entity);
 	}
+	
+	public UserDTO update(UserDTO dto, String id) {
+		UserDTO user = this.findById(id);
+		User entity = new User(user.getId(), user.getEmail(), user.getName());
+		
+		copyDtoToEntity(dto, entity);
+		entity = this.repository.save(entity);
+		
+		return new UserDTO(entity);
+	}
+	
+	public void delete(String id) {
+		this.findById(id);
+		this.repository.deleteById(id);
+	}
 
 	private void copyDtoToEntity(UserDTO dto, User entity) {
 		entity.setName(dto.getName());
