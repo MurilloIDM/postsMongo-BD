@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.iftm.models.dtos.PostDTO;
 import com.iftm.models.dtos.UserDTO;
 import com.iftm.models.entities.User;
 import com.iftm.repositories.UserRepository;
@@ -52,6 +53,16 @@ public class UserService {
 	public void delete(String id) {
 		this.findById(id);
 		this.repository.deleteById(id);
+	}
+	
+	public List<PostDTO> getUserPosts(String id) {
+		User entity = getEntityById(id);
+		return entity.getPosts().stream().map(x -> new PostDTO(x)).collect(Collectors.toList());
+	}
+	
+	public User getEntityById(String id) {
+		Optional<User> result = repository.findById(id);
+		return result.orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado!"));
 	}
 
 	private void copyDtoToEntity(UserDTO dto, User entity) {

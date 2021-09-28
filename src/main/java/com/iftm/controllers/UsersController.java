@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.iftm.models.dtos.PostDTO;
 import com.iftm.models.dtos.UserDTO;
 import com.iftm.services.UserService;
 
@@ -58,5 +59,11 @@ public class UsersController {
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable String id) {
 		this.service.delete(id);
+	}
+	
+	@GetMapping("/{id}/posts")
+	public ResponseEntity<List<PostDTO>> getUsersPosts(@PathVariable String id) {
+		List<PostDTO> list = service.getUserPosts(id);
+		return ResponseEntity.ok().body(list);
 	}
 }
